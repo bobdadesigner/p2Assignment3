@@ -4,6 +4,7 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import javax.swing.JPanel;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,14 +15,14 @@ import java.awt.Point;
  *
  * @author xuchang
  */
-public abstract class Shape {
+public abstract class Shape extends JPanel{
     
     protected Point startPoint;
     protected Point controlPoint;
     private Color colour;
     
     public Shape() {
-        startPoint.setLocation(0, 0);
+       this.startPoint = new Point(0,0);
         
     }
     
@@ -46,6 +47,26 @@ public abstract class Shape {
     
     public String toString() {
         
-        return "";
+       
+        return " startPoint " + startPoint.toString() + " controlPoint " + controlPoint.toString() + " colour " + colour.toString();
     }   
+    
+    public static void main(String[] args){
+        Point p = new Point(10,30);
+        Shape a = new Shape() {
+            @Override
+            public void draw(Graphics g) {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        a.setColour(Color.blue);
+        a.setControlPoint(p);
+        
+        
+        System.out.println(a.toString());
+        System.out.println();
+        
+        
+        
+    }
 }
