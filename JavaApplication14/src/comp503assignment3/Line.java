@@ -1,3 +1,5 @@
+package comp503assignment3;
+
 
 import java.awt.Graphics;
 import java.awt.Point;
