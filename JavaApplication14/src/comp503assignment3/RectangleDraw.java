@@ -1,5 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package comp503assignment3;
-
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -12,29 +16,23 @@ import java.util.ArrayList;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 /**
  *
  * @author xuchang
  */
-public class CircleDraw extends OvalDraw {
-
-    private DrawingPanel drawPanel;
+public class RectangleDraw extends OvalDraw {
+     private DrawingPanel drawPanel;
     private int PANEL_WIDTH = 500;
     private int PANEL_HEIGHT = 500;
 
-    private Squar circle;
+    private Rectangle rectangle;
 
-    private ArrayList<Squar> circleList;
+    private ArrayList<Rectangle> rectangleList;
 
-    public CircleDraw() {
+    public RectangleDraw() {
         super();
 
-        circleList = new ArrayList<Squar>();
+        rectangleList = new ArrayList<Rectangle>();
 
         drawPanel = new DrawingPanel();
         add(drawPanel, BorderLayout.CENTER);
@@ -42,7 +40,7 @@ public class CircleDraw extends OvalDraw {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        circle.setControlPoint(e.getPoint());
+        rectangle.setControlPoint(e.getPoint());
         repaint();
     }
 
@@ -50,7 +48,7 @@ public class CircleDraw extends OvalDraw {
     public void mousePressed(MouseEvent e) {
 
         startPoint = new Point(e.getPoint());
-        circle = new Squar(startPoint);
+        rectangle = new Rectangle(startPoint);
 
     }
 
@@ -67,12 +65,12 @@ public class CircleDraw extends OvalDraw {
 
             super.paintComponent(g);
 
-            if (circle != null) {
-                circle.draw(g);
-                circleList.add(circle);
+            if (rectangle != null) {
+                rectangle.draw(g);
+                rectangleList.add(rectangle);
             }
-            for (int i = 0; i < circleList.size(); i++) {
-                circleList.get(i).draw(g);
+            for (int i = 0; i < rectangleList.size(); i++) {
+                rectangleList.get(i).draw(g);
             }
 
         }
@@ -84,7 +82,7 @@ public class CircleDraw extends OvalDraw {
 
     public static void main(String args[]) {
 
-        CircleDraw fe = new CircleDraw();
+        RectangleDraw fe = new RectangleDraw();
         JFrame frame = new JFrame("Following Eyes"); //create frame to hold our JPanel subclass	
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(fe);  //add instance of MyGUI to the frame
@@ -96,3 +94,4 @@ public class CircleDraw extends OvalDraw {
     }
 
 }
+

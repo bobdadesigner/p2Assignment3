@@ -21,20 +21,20 @@ import javax.swing.JPanel;
  *
  * @author xuchang
  */
-public class CircleDraw extends OvalDraw {
+public class SquareDraw extends OvalDraw {
 
     private DrawingPanel drawPanel;
     private int PANEL_WIDTH = 500;
     private int PANEL_HEIGHT = 500;
 
-    private Squar circle;
+    private Square square;
 
-    private ArrayList<Squar> circleList;
+    private ArrayList<Square> squareList;
 
-    public CircleDraw() {
+    public SquareDraw() {
         super();
 
-        circleList = new ArrayList<Squar>();
+        squareList = new ArrayList<Square>();
 
         drawPanel = new DrawingPanel();
         add(drawPanel, BorderLayout.CENTER);
@@ -42,7 +42,7 @@ public class CircleDraw extends OvalDraw {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        circle.setControlPoint(e.getPoint());
+        square.setControlPoint(e.getPoint());
         repaint();
     }
 
@@ -50,7 +50,7 @@ public class CircleDraw extends OvalDraw {
     public void mousePressed(MouseEvent e) {
 
         startPoint = new Point(e.getPoint());
-        circle = new Squar(startPoint);
+        square = new Square(startPoint);
 
     }
 
@@ -67,24 +67,21 @@ public class CircleDraw extends OvalDraw {
 
             super.paintComponent(g);
 
-            if (circle != null) {
-                circle.draw(g);
-                circleList.add(circle);
+            if (square != null) {
+                square.draw(g);
+                squareList.add(square);
             }
-            for (int i = 0; i < circleList.size(); i++) {
-                circleList.get(i).draw(g);
+            for (int i = 0; i < squareList.size(); i++) {
+                squareList.get(i).draw(g);
             }
 
         }
     }
-//
-//    private class DrawingPanel extends JPanel {
-//            
-//    }
+
 
     public static void main(String args[]) {
 
-        CircleDraw fe = new CircleDraw();
+        SquareDraw fe = new SquareDraw();
         JFrame frame = new JFrame("Following Eyes"); //create frame to hold our JPanel subclass	
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(fe);  //add instance of MyGUI to the frame

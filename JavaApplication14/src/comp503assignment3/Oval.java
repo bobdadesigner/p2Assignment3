@@ -1,6 +1,5 @@
 package comp503assignment3;
 
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
@@ -33,11 +32,16 @@ public class Oval extends Shape implements EnclosesRegion {
     @Override
     public void draw(Graphics g) {
         g.setColor(this.getColour());
+        
+        int minX = Math.min(controlPoint.x, startPoint.x);
+        int minY = Math.min(controlPoint.y, startPoint.y);
+        int width = Math.abs(controlPoint.x - startPoint.x);
+        int height = Math.abs(controlPoint.y - startPoint.y);
 
         if (filled) {
-            g.fillOval(startPoint.x / 2, startPoint.y / 2, controlPoint.x, controlPoint.y);
+            g.fillOval(minX, minY, width, height);
         } else {
-            g.drawOval(startPoint.x / 2, startPoint.y / 2, controlPoint.x, controlPoint.y);
+            g.drawOval(minX, minY, width, height);
         }
 
     }
