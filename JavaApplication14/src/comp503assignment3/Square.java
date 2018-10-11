@@ -5,6 +5,7 @@
  */
 package comp503assignment3;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -12,8 +13,9 @@ import java.awt.Point;
  *
  * @author xuchang
  */
-public class Square  extends Shape implements EnclosesRegion {
-  private boolean filled;
+public class Square extends Shape implements EnclosesRegion {
+
+    private boolean filled;
 
     public Square(Point startPoint) {
         super(startPoint);
@@ -21,7 +23,6 @@ public class Square  extends Shape implements EnclosesRegion {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(this.getColour());
 
         int minX = Math.min(controlPoint.x, startPoint.x);
         int minY = Math.min(controlPoint.y, startPoint.y);
@@ -38,8 +39,12 @@ public class Square  extends Shape implements EnclosesRegion {
         }
 
         if (filled) {
+            g.setColor(Color.black);
+            g.drawRect(minX, minY, size, size);
+            g.setColor(this.getColour());
             g.fillRect(minX, minY, size, size);
         } else {
+            g.setColor(Color.black);
             g.drawRect(minX, minY, size, size);
         }
     }

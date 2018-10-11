@@ -29,17 +29,20 @@ public class Rectangle extends Shape implements EnclosesRegion {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(this.getColour());
+
         int minX = Math.min(controlPoint.x, startPoint.x);
         int minY = Math.min(controlPoint.y, startPoint.y);
         int width = Math.abs(controlPoint.x - startPoint.x);
         int height = Math.abs(controlPoint.y - startPoint.y);
 
         if (filled) {
+            g.setColor(Color.black);
+            g.drawRect(minX, minY, width, height);
+            g.setColor(this.getColour());
+
             g.fillRect(minX, minY, width, height);
 
         } else {
-            System.out.println(startPoint.x - controlPoint.x);
             g.drawRect(minX, minY, width, height);
         }
 

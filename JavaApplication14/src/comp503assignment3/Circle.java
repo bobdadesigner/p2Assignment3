@@ -1,5 +1,6 @@
 package comp503assignment3;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -12,17 +13,17 @@ import java.awt.Point;
  *
  * @author xuchang
  */
-public class Squar extends Shape implements EnclosesRegion {
+public class Circle extends Shape implements EnclosesRegion {
 
     private boolean filled;
 
-    public Squar(Point startPoint) {
+    public Circle(Point startPoint) {
         super(startPoint);
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(this.getColour());
+
 
         int minX = Math.min(controlPoint.x, startPoint.x);
         int minY = Math.min(controlPoint.y, startPoint.y);
@@ -39,6 +40,9 @@ public class Squar extends Shape implements EnclosesRegion {
         }
 
         if (filled) {
+            g.setColor(Color.black);
+            g.drawOval(minX, minY, size, size);
+            g.setColor(this.getColour());
             g.fillOval(minX, minY, size, size);
         } else {
             g.drawOval(minX, minY, size, size);

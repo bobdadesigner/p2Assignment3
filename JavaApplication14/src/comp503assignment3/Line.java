@@ -1,6 +1,7 @@
 package comp503assignment3;
 
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
 
@@ -27,7 +28,7 @@ public class Line extends Shape {
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(this.getColour());
+        g.setColor(Color.black);
         g.drawLine(startPoint.x, startPoint.y, controlPoint.x, controlPoint.y);
 
     }

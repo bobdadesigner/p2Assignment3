@@ -47,6 +47,7 @@ public class LineDraw extends JPanel implements ActionListener, MouseMotionListe
         
         drawPanel = new DrawingPanel();
         add(drawPanel, BorderLayout.CENTER);
+
         
     }
     
