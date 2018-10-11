@@ -70,21 +70,13 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
         add(drawPanel, BorderLayout.NORTH);
         add(shapechoicePanel, BorderLayout.CENTER);
         add(functionPanel, BorderLayout.SOUTH);
+
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         shape.setControlPoint(e.getPoint());
 
-//        oval.setControlPoint(e.getPoint());
-//        line.setControlPoint(e.getPoint());
-//        circle.setControlPoint(e.getPoint());
-//        rectangle.setControlPoint(e.getPoint());
-//        square.setControlPoint(e.getPoint());
-//        if (e.getX() == this.startPoint.getX()) {
-//            xy = new CoordinateXY("x", e.getX(), e.getX());
-//
-//        }
         repaint();
 
     }
@@ -101,19 +93,16 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
 
     @Override
     public void mousePressed(MouseEvent e) {
-//        shape = new Shape(e.getPoint()) {
-//            @Override
-//            public void draw(Graphics g) {
-//                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//            }
-//        };
-
         startPoint = new Point(e.getPoint());
-//        oval = new Oval(startPoint);
-//        line = new Line(startPoint);
-//        circle = new Circle(startPoint);
-//        rectangle = new Rectangle(startPoint);
-//        square = new Square(startPoint);
+
+        if (shapeName == "oval") {
+            
+            Oval o = new Oval(startPoint);
+            o.setFilled(filled);
+            shape = o;
+            shapeList.add(shape);
+        }
+
         repaint();
 
     }
@@ -121,14 +110,8 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
     @Override
     public void mouseReleased(MouseEvent e) {
 
-        endPoint = new Point(e.getPoint());
-        shape.setControlPoint(endPoint);
-
-//        oval.setControlPoint(endPoint);
-//        line.setControlPoint(endPoint);
-//        circle.setControlPoint(endPoint);
-//        rectangle.setControlPoint(endPoint);
-//        square.setControlPoint(endPoint);
+        shape.setControlPoint(e.getPoint());
+//shapeList.add(shape);
         repaint();
     }
 
@@ -143,16 +126,8 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
     }
 
     private void addButtonListeners() {
-        shapechoicePanel.addLineButtonActionListener(l -> shapeName = "line");
-        shapechoicePanel.addOvalButtonActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent l) {
-                shape = new Oval(startPoint);
-                
-                System.out.println(shape.startPoint);
-                System.out.println(shape.controlPoint);
-            }
-        });
+        shapechoicePanel.addLineButtonActionListener(l -> shapeName = "Line");
+        shapechoicePanel.addOvalButtonActionListener(l -> shapeName = "oval");
         shapechoicePanel.addCircleButtonActionListener(l -> shapeName = "circle");
         shapechoicePanel.addRectangleButtonActionListener(l -> shapeName = "rectangle");
         shapechoicePanel.addSquareButtonActionListener(l -> shapeName = "square");
@@ -164,16 +139,12 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
 //        functionPanel.addOpenButtonActionListener(l ->);
 //        functionPanel.addundoButtonActionListener(l ->);
         functionPanel.addClearButtonActionListener((ActionEvent l) -> {
-
             shapeList.clear();
             repaint();
         });
 
-        functionPanel.addFilledCheckActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent l) {
-                filled = functionPanel.filledCheck.isSelected();
-            }
+        functionPanel.addFilledCheckActionListener((ActionEvent l) -> {
+            filled = functionPanel.filledCheck.isSelected();
         });
     }
 
@@ -189,58 +160,30 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
 
-//            if (shapeName.equals("line")) {
-//                if (line != null) {
-////                    line.draw(g);
-//                    shapeList.add(line);
+//            if (shape != null) {
+//                
+//                shape.draw(g);
 //
-//                }
-//
-//                if (shapeName.equals("oval")) {
-
-
-
-            if (shape != null) {
-//                if (filled) {
-//                    shape.setColour(color);
-//                }
-                shape.draw(g);
-                shapeList.add(shape);
-            }
+//                shapeList.add(shape);
+//            } else if (shape == null) {
+//                System.out.println("nullnnnll");
+//            }
 //                    } else if (shapeName.equals("circle")) {
 //                        if (circle != null) {
 //                            circle.setFilled(filled);
 //                            circle.setColour(color);
 ////                    circle.draw(g);
 //                            shapeList.add(circle);
-//
-//                        }
-//
-//                    } else if (shapeName.equals("rectangle")) {
-//                        if (rectangle != null) {
-//                            rectangle.setFilled(filled);
-//                            rectangle.setColour(color);
-////                    rectangle.draw(g);
-//                            shapeList.add(rectangle);
-//
-//                        }
-//
-//                    } else if (shapeName.equals("square")) {
-//                        if (square != null) {
-//                            square.setFilled(filled);
-//                            square.setColour(color);
-////                    square.draw(g);
-//                            shapeList.add(square);
-//
-//                        }
-//                    }
-                    for (int i = 0; i < shapeList.size(); i++) {
-                        shapeList.get(i).draw(g);
-                    }
+
+            for (int i = 0; i < shapeList.size(); i++) {
+                shapeList.get(i).draw(g);
+            }
 //                }
 //            }
         }
     }
+
+    
 
     public static void main(String[] args) {
 
