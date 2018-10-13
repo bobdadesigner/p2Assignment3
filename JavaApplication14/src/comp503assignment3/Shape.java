@@ -4,6 +4,7 @@ package comp503assignment3;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Point;
+import java.io.Serializable;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -14,7 +15,7 @@ import java.awt.Point;
  *
  * @author xuchang
  */
-public abstract class Shape {
+public abstract class Shape  implements Serializable {
 
     protected Point startPoint;
     protected Point controlPoint;

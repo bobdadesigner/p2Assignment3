@@ -16,10 +16,19 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
-import java.util.Stack;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -30,26 +39,15 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
 
     private DrawingPanel drawPanel;
     private int PANEL_WIDTH = 500;
-    private int PANEL_HEIGHT = 500;
-
-//    private Line line;
-//    private Oval oval;
-//    private Circle circle;
-//    private Rectangle rectangle;
-//    private Square square;
+    private int PANEL_HEIGHT = 700;
     private Shape shape;
-
     private ShapechoicePanel shapechoicePanel;
     private FunctionPanel functionPanel;
-
     private ArrayList<Shape> shapeList;
-
-    private Point startPoint, endPoint;
+    private Point startPoint = null;
+    private Point HorizVerPoint = null;
     private String shapeName = "";
     private boolean filled = false;
-
-    private CoordinateXY xy;
-
     private Color color;
 
     public ShapeSketcher() {
@@ -58,24 +56,25 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
         this.setBackground(Color.black);
         shapechoicePanel = new ShapechoicePanel();
         functionPanel = new FunctionPanel();
-
         shapeList = new ArrayList<Shape>();
-//        shapeList.add(line);
-
         addMouseMotionListener(this);
         addMouseListener(this);
-
         addButtonListeners();
+
         drawPanel = new DrawingPanel();
+
         add(drawPanel, BorderLayout.NORTH);
         add(shapechoicePanel, BorderLayout.CENTER);
         add(functionPanel, BorderLayout.SOUTH);
+        filled = functionPanel.filledCheck.isSelected();
 
     }
 
     @Override
     public void mouseDragged(MouseEvent e) {
         shape.setControlPoint(e.getPoint());
+        HorizVerPoint.x = e.getX();
+        HorizVerPoint.y = e.getY();
 
         repaint();
 
@@ -94,12 +93,35 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
     @Override
     public void mousePressed(MouseEvent e) {
         startPoint = new Point(e.getPoint());
-
+        HorizVerPoint = new Point(e.getPoint());
         if (shapeName == "oval") {
-            
-            Oval o = new Oval(startPoint);
-            o.setFilled(filled);
-            shape = o;
+            Oval oval = new Oval(startPoint);
+            oval.setFilled(filled);
+            shape = oval;
+            shape.setColour(color);
+            shapeList.add(shape);
+        } else if (shapeName == "line") {
+            Line line = new Line(startPoint);
+            shape = line;
+//            shape.setColour(color);
+            shapeList.add(shape);
+        } else if (shapeName == "circle") {
+            Circle circle = new Circle(startPoint);
+            circle.setFilled(filled);
+            shape = circle;
+            shape.setColour(color);
+            shapeList.add(shape);
+        } else if (shapeName == "rectangle") {
+            Rectangle rectangle = new Rectangle(startPoint);
+            rectangle.setFilled(filled);
+            shape = rectangle;
+            shape.setColour(color);
+            shapeList.add(shape);
+        } else if (shapeName == "square") {
+            Square square = new Square(startPoint);
+            square.setFilled(filled);
+            shape = square;
+            shape.setColour(color);
             shapeList.add(shape);
         }
 
@@ -111,7 +133,7 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
     public void mouseReleased(MouseEvent e) {
 
         shape.setControlPoint(e.getPoint());
-//shapeList.add(shape);
+
         repaint();
     }
 
@@ -125,24 +147,78 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
 
     }
 
+    public ArrayList<Shape> getShapeList() {
+        return shapeList;
+    }
+
     private void addButtonListeners() {
-        shapechoicePanel.addLineButtonActionListener(l -> shapeName = "Line");
+        shapechoicePanel.addLineButtonActionListener(l -> shapeName = "line");
         shapechoicePanel.addOvalButtonActionListener(l -> shapeName = "oval");
         shapechoicePanel.addCircleButtonActionListener(l -> shapeName = "circle");
         shapechoicePanel.addRectangleButtonActionListener(l -> shapeName = "rectangle");
         shapechoicePanel.addSquareButtonActionListener(l -> shapeName = "square");
+        shapechoicePanel.addColourButtonActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent l) {
+                color = JColorChooser.showDialog(shapechoicePanel, "PICK A COLOUR", Color.BLACK);
+                functionPanel.filledCheck.setSelected(true);
+                filled = functionPanel.filledCheck.isSelected();
 
-        shapechoicePanel.addColourButtonActionListener(l -> color = JColorChooser.showDialog(shapechoicePanel, "PICK A COLOUR", Color.BLACK));
+            }
+        });
 
         functionPanel.addExitButtonActionListener(l -> System.exit(0));
-//        functionPanel.addSaveButtonActionListener(l ->);
-//        functionPanel.addOpenButtonActionListener(l ->);
-//        functionPanel.addundoButtonActionListener(l ->);
+        functionPanel.addSaveButtonActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent l) {
+                JFileChooser chooser = new JFileChooser(new File("."));
+                int status = chooser.showSaveDialog(null);
+                if (status == JFileChooser.APPROVE_OPTION) {
+                    try {
+                        saveShapeToFile(shapeList, chooser.getSelectedFile());
+                    } catch (IOException ex) {
+                        System.out.println("save io exception");
+                        Logger.getLogger(ShapeSketcher.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+            }
+        });
+        functionPanel.addOpenButtonActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent l) {
+                JFileChooser chooser = new JFileChooser(new File("."));
+                chooser.showOpenDialog(null);
+                try {
+                    shapeList = loadShapeFromFile(chooser.getSelectedFile());
+                } catch (IOException ex) {
+                    System.out.println("load io exception");
+                    JOptionPane.showMessageDialog(chooser, "not able to read file, please select a valid file");
+
+                } catch (ClassNotFoundException ex) {
+                    System.out.println("class not found exception");
+                    Logger.getLogger(ShapeSketcher.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                repaint();
+            }
+        });
+
+        functionPanel.addundoButtonActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent l) {
+                try {
+                    if (shapeList != null) {
+                        shapeList.remove(shapeList.size() - 1);
+                        repaint();
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    JOptionPane.showMessageDialog(functionPanel, "no more shape");
+                }
+            }
+        });
         functionPanel.addClearButtonActionListener((ActionEvent l) -> {
             shapeList.clear();
             repaint();
         });
-
         functionPanel.addFilledCheckActionListener((ActionEvent l) -> {
             filled = functionPanel.filledCheck.isSelected();
         });
@@ -159,31 +235,46 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
+            try {
+                for (int i = 0; i < shapeList.size(); i++) {
+                    shapeList.get(i).draw(g);
+                }
 
-//            if (shape != null) {
-//                
-//                shape.draw(g);
-//
-//                shapeList.add(shape);
-//            } else if (shape == null) {
-//                System.out.println("nullnnnll");
-//            }
-//                    } else if (shapeName.equals("circle")) {
-//                        if (circle != null) {
-//                            circle.setFilled(filled);
-//                            circle.setColour(color);
-////                    circle.draw(g);
-//                            shapeList.add(circle);
+                if (startPoint.x == HorizVerPoint.x && startPoint != null) {
+                    g.drawString("V", HorizVerPoint.x, HorizVerPoint.y);
+                } else if (startPoint.y == HorizVerPoint.y && startPoint != null) {
+                    g.drawString("H", HorizVerPoint.x, HorizVerPoint.y);
+                }
 
-            for (int i = 0; i < shapeList.size(); i++) {
-                shapeList.get(i).draw(g);
+            } catch (NullPointerException e) {
+
             }
-//                }
-//            }
         }
     }
 
-    
+    public void saveShapeToFile(ArrayList<Shape> shapeLi, File f) throws IOException {
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(f));
+        oos.writeInt(shapeLi.size());
+        for (Shape c : shapeLi) {
+            oos.writeObject(c);
+        }
+        oos.flush();
+        oos.close();
+    }
+//
+
+    public ArrayList<Shape> loadShapeFromFile(File f) throws IOException, ClassNotFoundException {
+        ArrayList<Shape> list = new ArrayList<>();
+        Shape ba = null;
+        ObjectInputStream ois = new ObjectInputStream(new FileInputStream(f));
+        int size = ois.readInt();
+        for (int i = 0; i < size; i++) {
+            ba = (Shape) ois.readObject();
+            list.add(ba);
+        }
+        ois.close();
+        return list;
+    }
 
     public static void main(String[] args) {
 
@@ -192,7 +283,6 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().add(fe);  //add instance of MyGUI to the frame
         frame.pack(); //resize frame to fit our Jpanel
-
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(new Point((d.width / 2) - (frame.getWidth() / 2), (d.height / 2) - (frame.getHeight() / 2)));
         //show the frame	

@@ -17,17 +17,17 @@ import javax.swing.JPanel;
  */
 public class FunctionPanel extends JPanel {
 
-//    private BoxLayout box;
+
     protected MyButton exitButton, saveButton, openButton, undoButton, clearButton;
     protected JCheckBox filledCheck;
 
     public FunctionPanel() {
 
-        exitButton = new MyButton("exit");
-        saveButton = new MyButton("save");
-        openButton = new MyButton("open");
-        undoButton = new MyButton("undo");
-        clearButton = new MyButton("clear");
+        exitButton = new MyButton("QUIT");
+        saveButton = new MyButton("Save");
+        openButton = new MyButton("Open");
+        undoButton = new MyButton("Undo");
+        clearButton = new MyButton("Clear");
         filledCheck = new JCheckBox("Fill Colour");
 
         this.add(exitButton);

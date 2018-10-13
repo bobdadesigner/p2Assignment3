@@ -38,8 +38,6 @@ public class ShapechoicePanel extends JPanel {
         this.add(squareButton);
         this.add(colourButton);
 
-//        this.setBackground(Color.black);
-//        this.setForeground(Color.black);
 
     }
     
