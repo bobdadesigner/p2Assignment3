@@ -32,7 +32,6 @@ public class Oval extends Shape implements EnclosesRegion {
     @Override
     public void draw(Graphics g) {
 
-
         int minX = Math.min(controlPoint.x, startPoint.x);
         int minY = Math.min(controlPoint.y, startPoint.y);
         int width = Math.abs(controlPoint.x - startPoint.x);

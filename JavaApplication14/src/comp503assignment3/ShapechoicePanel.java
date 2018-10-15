@@ -5,10 +5,7 @@
  */
 package comp503assignment3;
 
-import java.awt.Color;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 /**
@@ -19,29 +16,20 @@ public class ShapechoicePanel extends JPanel {
 
     protected MyButton lineButton, ovalButton, circleButton, rectangleButton, squareButton, colourButton;
 
-
     public ShapechoicePanel() {
-
-
         lineButton = new MyButton("Line");
         ovalButton = new MyButton("Oval");
         circleButton = new MyButton("Circle");
         rectangleButton = new MyButton("Rectangle");
         squareButton = new MyButton("Square");
         colourButton = new MyButton("Colour");
-
-
         this.add(lineButton);
         this.add(ovalButton);
         this.add(circleButton);
         this.add(rectangleButton);
         this.add(squareButton);
         this.add(colourButton);
-
-
     }
-    
-    
 
     public void addLineButtonActionListener(ActionListener l) {
         this.lineButton.addButtActionListener(l);

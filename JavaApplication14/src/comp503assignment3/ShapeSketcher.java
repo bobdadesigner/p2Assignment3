@@ -46,7 +46,7 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
     private ArrayList<Shape> shapeList;
     private Point startPoint = null;
     private Point HorizVerPoint = null;
-    private String shapeName = "";
+    private String shapeName = "line";
     private boolean filled = false;
     private Color color;
 
@@ -103,7 +103,6 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
         } else if (shapeName == "line") {
             Line line = new Line(startPoint);
             shape = line;
-//            shape.setColour(color);
             shapeList.add(shape);
         } else if (shapeName == "circle") {
             Circle circle = new Circle(startPoint);

@@ -23,10 +23,9 @@ public class MyButton extends JPanel {
 
     private JButton button;
 
-    public MyButton(String but) {
+    public MyButton(String buttonName) {
 
-        this.button = new JButton(but);
-//        this.button.setText(but);
+        this.button = new JButton(buttonName);
         this.button.setForeground(Color.white);
         this.button.setFont(new Font("Helvetica", Font.BOLD, 15));
         this.button.setBorderPainted(true);

@@ -24,7 +24,6 @@ public class Circle extends Shape implements EnclosesRegion {
     @Override
     public void draw(Graphics g) {
 
-
         int minX = Math.min(controlPoint.x, startPoint.x);
         int minY = Math.min(controlPoint.y, startPoint.y);
         int maxX = Math.max(controlPoint.x, startPoint.x);

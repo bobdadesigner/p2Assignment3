@@ -5,9 +5,7 @@
  */
 package comp503assignment3;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
-import javax.swing.BoxLayout;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
@@ -16,7 +14,6 @@ import javax.swing.JPanel;
  * @author xuchang
  */
 public class FunctionPanel extends JPanel {
-
 
     protected MyButton exitButton, saveButton, openButton, undoButton, clearButton;
     protected JCheckBox filledCheck;
