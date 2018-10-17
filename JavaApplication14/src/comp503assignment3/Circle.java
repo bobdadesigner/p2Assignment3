@@ -44,6 +44,7 @@ public class Circle extends Shape implements EnclosesRegion {
             g.setColor(this.getColour());
             g.fillOval(minX, minY, size, size);
         } else {
+            g.setColor(Color.black);
             g.drawOval(minX, minY, size, size);
         }
     }

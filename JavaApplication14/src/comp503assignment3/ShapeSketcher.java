@@ -73,8 +73,8 @@ public class ShapeSketcher extends JPanel implements MouseMotionListener, MouseL
     @Override
     public void mouseDragged(MouseEvent e) {
         shape.setControlPoint(e.getPoint());
-        HorizVerPoint.x = e.getX();
-        HorizVerPoint.y = e.getY();
+        HorizVerPoint = e.getPoint();
+
 
         repaint();
 

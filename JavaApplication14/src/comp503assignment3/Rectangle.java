@@ -43,6 +43,7 @@ public class Rectangle extends Shape implements EnclosesRegion {
             g.fillRect(minX, minY, width, height);
 
         } else {
+            g.setColor(Color.black);
             g.drawRect(minX, minY, width, height);
         }
 
